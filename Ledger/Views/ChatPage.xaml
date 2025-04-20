@@ -8,17 +8,18 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
             <!-- Template for user messages -->
             <DataTemplate x:Key="UserMessageTemplate">
                 <Grid Padding="10" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
-                    <Frame Grid.Column="1" Grid.Row="0"
-                           Padding="10" 
-                           BackgroundColor="#DCF8C6"
-                           CornerRadius="10">
+                    <Border Grid.Column="1" Grid.Row="0"
+                            Padding="10" 
+                            Background="#DCF8C6"
+                            StrokeShape="RoundRectangle 10">
                         <Label Text="{Binding Text}" 
                                TextColor="Black"
                                LineBreakMode="WordWrap" />
-                    </Frame>
+                    </Border>
                     <Label Grid.Column="1" Grid.Row="1"
                            Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}"
                            FontSize="10"
@@ -30,14 +31,14 @@
             <!-- Template for AI messages -->
             <DataTemplate x:Key="AiMessageTemplate">
                 <Grid Padding="10" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
-                    <Frame Grid.Column="0" Grid.Row="0"
-                           Padding="10" 
-                           BackgroundColor="#EFEFEF"
-                           CornerRadius="10">
+                    <Border Grid.Column="0" Grid.Row="0"
+                            Padding="10" 
+                            Background="#EFEFEF"
+                            StrokeShape="RoundRectangle 10">
                         <Label Text="{Binding Text}" 
                                TextColor="Black"
                                LineBreakMode="WordWrap" />
-                    </Frame>
+                    </Border>
                     <Label Grid.Column="0" Grid.Row="1"
                            Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}"
                            FontSize="10"
@@ -49,26 +50,26 @@
             <!-- Template for typing indicator -->
             <DataTemplate x:Key="TypingTemplate">
                 <Grid Padding="10" ColumnDefinitions="Auto,*" RowDefinitions="Auto">
-                    <Frame Grid.Column="0"
-                           Padding="10" 
-                           BackgroundColor="#EFEFEF"
-                           CornerRadius="10">
+                    <Border Grid.Column="0"
+                            Padding="10" 
+                            Background="#EFEFEF"
+                            StrokeShape="RoundRectangle 10">
                         <Label Text="Typing..." 
                                TextColor="Black" />
-                    </Frame>
+                    </Border>
                 </Grid>
             </DataTemplate>
 
             <!-- Template for error messages -->
             <DataTemplate x:Key="ErrorTemplate">
                 <Grid Padding="10" ColumnDefinitions="Auto,*" RowDefinitions="Auto">
-                    <Frame Grid.Column="0"
-                           Padding="10" 
-                           BackgroundColor="#FFCCCB"
-                           CornerRadius="10">
+                    <Border Grid.Column="0"
+                            Padding="10" 
+                            Background="#FFCCCB"
+                            StrokeShape="RoundRectangle 10">
                         <Label Text="{Binding Text}" 
                                TextColor="DarkRed" />
-                    </Frame>
+                    </Border>
                 </Grid>
             </DataTemplate>
 

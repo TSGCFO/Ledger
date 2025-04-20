@@ -4,10 +4,10 @@ namespace Ledger.ViewModels
 {
     public class ChatTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate UserTemplate { get; set; }
-        public DataTemplate AiTemplate { get; set; }
-        public DataTemplate TypingTemplate { get; set; }
-        public DataTemplate ErrorTemplate { get; set; }
+        public DataTemplate UserTemplate { get; set; } = null!;
+        public DataTemplate AiTemplate { get; set; } = null!;
+        public DataTemplate TypingTemplate { get; set; } = null!;
+        public DataTemplate ErrorTemplate { get; set; } = null!;
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {

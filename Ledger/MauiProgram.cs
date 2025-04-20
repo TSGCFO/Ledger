@@ -1,4 +1,7 @@
 ﻿using Ledger.Config;
+using Ledger.Converters;
+using Ledger.ViewModels;
+using Ledger.Views;
 using Ledger.Infrastructure.AI;
 using Ledger.Infrastructure.Database;
 using Ledger.Interfaces;
@@ -23,7 +26,7 @@ namespace Ledger
             builder.Services.AddSingleton<SupabaseConfig>(new SupabaseConfig());
             builder.Services.AddSingleton<AnthropicConfig>(new AnthropicConfig
             {
-                ModelName = "claude-3-sonnet-20240229",
+                ModelName = "claude-3-7-sonnet-20250219",
                 ApiVersion = "2023-06-01",
                 MaxTokens = 4096,
                 Temperature = 0.7f
@@ -32,6 +35,15 @@ namespace Ledger
             // Register services
             builder.Services.AddSingleton<IDatabaseService, SupabaseDatabaseService>();
             builder.Services.AddSingleton<IAiAssistantService, AnthropicAssistantService>();
+
+            // Register converters
+            builder.Services.AddSingleton<InverseBoolConverter>();
+
+            // Register ViewModels
+            builder.Services.AddSingleton<ChatViewModel>();
+
+            // Register Pages
+            builder.Services.AddSingleton<ChatPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
