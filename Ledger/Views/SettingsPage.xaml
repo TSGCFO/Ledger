@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Ledger.ViewModels"
+             x:Class="Ledger.Views.SettingsPage"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="20">
+        <Label Grid.Row="0"
+               Text="Anthropic API Key"
+               FontAttributes="Bold"
+               Margin="0,20,0,5" />
+
+        <Grid Grid.Row="1" ColumnDefinitions="*, Auto">
+            <Entry Grid.Column="0"
+                   Placeholder="Enter API Key"
+                   Text="{Binding ApiKey, Mode=TwoWay}"
+                   IsPassword="True"
+                   Margin="0,0,10,0" />
+
+            <Button Grid.Column="1"
+                    Text="Test"
+                    Command="{Binding TestConnectionCommand}"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}" />
+        </Grid>
+
+        <StackLayout Grid.Row="2" Margin="0,20,0,0" Spacing="10">
+            <Label Text="{Binding StatusMessage}"
+                   TextColor="{Binding IsConnected, Converter={StaticResource BoolToColorConverter}}" />
+
+            <Button Text="Save Settings"
+                    Command="{Binding SaveCommand}"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                    HorizontalOptions="Fill" />
+        </StackLayout>
+
+        <ActivityIndicator Grid.Row="3"
+                          IsRunning="{Binding IsBusy}"
+                          IsVisible="{Binding IsBusy}"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Start"
+                          Margin="0,20,0,0" />
+    </Grid>
+</ContentPage>

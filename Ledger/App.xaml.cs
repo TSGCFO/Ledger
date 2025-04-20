@@ -1,24 +1,23 @@
-﻿using Ledger.Views;
-using Microsoft.Maui.Controls.PlatformConfiguration;
+﻿using Microsoft.Maui.Controls.PlatformConfiguration;
 
 namespace Ledger
 {
     public partial class App : Application
     {
-        private readonly ChatPage _chatPage;
+        private readonly AppShell _appShell;
 
-        public App(ChatPage chatPage)
+        public App(AppShell appShell)
         {
             InitializeComponent();
-            _chatPage = chatPage;
+            _appShell = appShell;
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
             var window = base.CreateWindow(activationState);
 
-            // Set the page to our chat page wrapped in a navigation page
-            window.Page = new NavigationPage(_chatPage);
+            // Set the Shell as the main page
+            window.Page = _appShell;
 
             return window;
         }

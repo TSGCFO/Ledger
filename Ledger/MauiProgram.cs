@@ -45,6 +45,20 @@ namespace Ledger
             // Register Pages
             builder.Services.AddSingleton<ChatPage>();
 
+            // Register converters
+            builder.Services.AddSingleton<InverseBoolConverter>();
+            builder.Services.AddSingleton<BoolToColorConverter>();
+
+            // Register ViewModels
+            builder.Services.AddSingleton<ChatViewModel>();
+            builder.Services.AddSingleton<SettingsViewModel>();
+
+            // Register Pages
+            builder.Services.AddSingleton<ChatPage>();
+            builder.Services.AddSingleton<SettingsPage>();
+
+            // Register Shell
+            builder.Services.AddTransient<AppShell>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
