@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Ledger.Config;
+using Ledger.Infrastructure.AI;
+using Ledger.Infrastructure.Database;
+using Ledger.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Ledger
 {
@@ -15,8 +19,22 @@ namespace Ledger
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            // Register configurations
+            builder.Services.AddSingleton<SupabaseConfig>(new SupabaseConfig());
+            builder.Services.AddSingleton<AnthropicConfig>(new AnthropicConfig
+            {
+                ModelName = "claude-3-sonnet-20240229",
+                ApiVersion = "2023-06-01",
+                MaxTokens = 4096,
+                Temperature = 0.7f
+            });
+
+            // Register services
+            builder.Services.AddSingleton<IDatabaseService, SupabaseDatabaseService>();
+            builder.Services.AddSingleton<IAiAssistantService, AnthropicAssistantService>();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

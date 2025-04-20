@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Ledger.ViewModels"
+             xmlns:converters="clr-namespace:Ledger.Converters"
+             x:Class="Ledger.Views.ChatPage"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Template for user messages -->
+            <DataTemplate x:Key="UserMessageTemplate">
+                <Grid Padding="10" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                    <Frame Grid.Column="1" Grid.Row="0"
+                           Padding="10" 
+                           BackgroundColor="#DCF8C6"
+                           CornerRadius="10">
+                        <Label Text="{Binding Text}" 
+                               TextColor="Black"
+                               LineBreakMode="WordWrap" />
+                    </Frame>
+                    <Label Grid.Column="1" Grid.Row="1"
+                           Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}"
+                           FontSize="10"
+                           HorizontalOptions="End"
+                           Margin="0,2,5,0" />
+                </Grid>
+            </DataTemplate>
+
+            <!-- Template for AI messages -->
+            <DataTemplate x:Key="AiMessageTemplate">
+                <Grid Padding="10" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
+                    <Frame Grid.Column="0" Grid.Row="0"
+                           Padding="10" 
+                           BackgroundColor="#EFEFEF"
+                           CornerRadius="10">
+                        <Label Text="{Binding Text}" 
+                               TextColor="Black"
+                               LineBreakMode="WordWrap" />
+                    </Frame>
+                    <Label Grid.Column="0" Grid.Row="1"
+                           Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}"
+                           FontSize="10"
+                           HorizontalOptions="Start"
+                           Margin="5,2,0,0" />
+                </Grid>
+            </DataTemplate>
+
+            <!-- Template for typing indicator -->
+            <DataTemplate x:Key="TypingTemplate">
+                <Grid Padding="10" ColumnDefinitions="Auto,*" RowDefinitions="Auto">
+                    <Frame Grid.Column="0"
+                           Padding="10" 
+                           BackgroundColor="#EFEFEF"
+                           CornerRadius="10">
+                        <Label Text="Typing..." 
+                               TextColor="Black" />
+                    </Frame>
+                </Grid>
+            </DataTemplate>
+
+            <!-- Template for error messages -->
+            <DataTemplate x:Key="ErrorTemplate">
+                <Grid Padding="10" ColumnDefinitions="Auto,*" RowDefinitions="Auto">
+                    <Frame Grid.Column="0"
+                           Padding="10" 
+                           BackgroundColor="#FFCCCB"
+                           CornerRadius="10">
+                        <Label Text="{Binding Text}" 
+                               TextColor="DarkRed" />
+                    </Frame>
+                </Grid>
+            </DataTemplate>
+
+            <!-- Template selector for messages -->
+            <viewmodels:ChatTemplateSelector x:Key="ChatTemplateSelector"
+                                            UserTemplate="{StaticResource UserMessageTemplate}"
+                                            AiTemplate="{StaticResource AiMessageTemplate}"
+                                            TypingTemplate="{StaticResource TypingTemplate}"
+                                            ErrorTemplate="{StaticResource ErrorTemplate}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*, Auto">
+        <!-- Messages List -->
+        <CollectionView Grid.Row="0"
+                       ItemsSource="{Binding Messages}"
+                       ItemTemplate="{StaticResource ChatTemplateSelector}"
+                       VerticalScrollBarVisibility="Default"
+                       Margin="0,0,0,10"
+                       x:Name="MessagesCollection">
+            <CollectionView.EmptyView>
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="No messages yet"
+                           HorizontalOptions="Center"
+                           TextColor="Gray" />
+                </StackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+
+        <!-- Input Area -->
+        <Grid Grid.Row="1" 
+              ColumnDefinitions="*, Auto" 
+              Padding="10" 
+              BackgroundColor="#F5F5F5">
+            <Entry Grid.Column="0"
+                   Placeholder="Type a message..."
+                   Text="{Binding UserMessage, Mode=TwoWay}"
+                   Margin="0,0,10,0"
+                   VerticalOptions="Center" />
+            <Button Grid.Column="1"
+                    Text="Send"
+                    Command="{Binding SendCommand}"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                    VerticalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>
