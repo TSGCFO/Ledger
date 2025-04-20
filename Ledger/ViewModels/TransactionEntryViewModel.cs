@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
+using System.Linq;
 
 namespace Ledger.ViewModels
 {
@@ -13,15 +14,15 @@ namespace Ledger.ViewModels
     {
         private readonly IAiAssistantService _aiService;
         private readonly IDatabaseService _databaseService;
-        private ChequeTransaction _transaction;
+        private ChequeTransaction _transaction = new();
         private string _statusMessage = string.Empty;
         private bool _isSuccess;
         private bool _hasImage;
-        private ImageSource _chequeImage;
-        private ObservableCollection<Customer> _customers;
-        private ObservableCollection<Vendor> _vendors;
-        private Customer _selectedCustomer;
-        private Vendor _selectedVendor;
+        private ImageSource? _chequeImage;
+        private ObservableCollection<Customer> _customers = new();
+        private ObservableCollection<Vendor> _vendors = new();
+        private Customer? _selectedCustomer;
+        private Vendor? _selectedVendor;
 
         public TransactionEntryViewModel(IAiAssistantService aiService, IDatabaseService databaseService)
         {
@@ -35,9 +36,6 @@ namespace Ledger.ViewModels
                 Date = DateTime.Today,
                 ChequeAmount = 0
             };
-
-            Customers = new ObservableCollection<Customer>();
-            Vendors = new ObservableCollection<Vendor>();
 
             // Initialize commands
             CaptureImageCommand = new Command(async () => await CaptureImageAsync());
@@ -65,7 +63,7 @@ namespace Ledger.ViewModels
             set => SetProperty(ref _vendors, value);
         }
 
-        public Customer SelectedCustomer
+        public Customer? SelectedCustomer
         {
             get => _selectedCustomer;
             set
@@ -78,7 +76,7 @@ namespace Ledger.ViewModels
             }
         }
 
-        public Vendor SelectedVendor
+        public Vendor? SelectedVendor
         {
             get => _selectedVendor;
             set
@@ -115,7 +113,7 @@ namespace Ledger.ViewModels
             }
         }
 
-        public ImageSource ChequeImage
+        public ImageSource? ChequeImage
         {
             get => _chequeImage;
             set => SetProperty(ref _chequeImage, value);
@@ -138,7 +136,11 @@ namespace Ledger.ViewModels
 
                 if (!MediaPicker.IsCaptureSupported)
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "Camera is not supported on this device.", "OK");
+                    var currentWindow = Application.Current?.Windows.FirstOrDefault();
+                    if (currentWindow?.Page != null)
+                    {
+                        await currentWindow.Page.DisplayAlert("Error", "Camera is not supported on this device.", "OK");
+                    }
                     return;
                 }
 
@@ -331,11 +333,11 @@ namespace Ledger.ViewModels
                 ChequeAmount = 0
             };
 
-            // Clear selections
+            // Clear selections - these are now nullable so no warnings
             SelectedCustomer = null;
             SelectedVendor = null;
 
-            // Clear the image
+            // Clear the image - this is now nullable so no warning
             ChequeImage = null;
             HasImage = false;
 
