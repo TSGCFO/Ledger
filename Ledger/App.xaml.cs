@@ -8,18 +8,31 @@ namespace Ledger
 
         public App(AppShell appShell)
         {
-            InitializeComponent(); // Ensure this method is generated in App.xaml
-            _appShell = appShell;
+            try
+            {
+                InitializeComponent();
+                _appShell = appShell;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error initializing App: {ex.Message}");
+                throw; // Re-throw to see the error
+            }
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            var window = base.CreateWindow(activationState);
-
-            // Set the Shell as the main page
-            window.Page = _appShell;
-
-            return window;
+            try
+            {
+                var window = base.CreateWindow(activationState);
+                window.Page = _appShell;
+                return window;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating window: {ex.Message}");
+                throw; // Re-throw to see the error
+            }
         }
     }
 }

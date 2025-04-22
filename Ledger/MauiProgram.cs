@@ -44,8 +44,6 @@ namespace Ledger
             builder.Services.AddSingleton<SettingsViewModel>();
             builder.Services.AddSingleton<TransactionEntryViewModel>();
 
-            // Register Pages
-            builder.Services.AddSingleton<ChatPage>();
 
             // Register converters
             builder.Services.AddSingleton<InverseBoolConverter>();
