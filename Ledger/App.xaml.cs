@@ -8,7 +8,7 @@ namespace Ledger
 
         public App(AppShell appShell)
         {
-            InitializeComponent();
+            InitializeComponent(); // Ensure this method is generated in App.xaml
             _appShell = appShell;
         }
 
