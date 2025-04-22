@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Ledger.ViewModels"
+             xmlns:converters="clr-namespace:Ledger.Converters"
+             x:Class="Ledger.Views.TransactionEntryPage"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+            <!-- Cheque Image Section -->
+            <Label Text="Cheque Image" FontAttributes="Bold" />
+            <Border StrokeShape="RoundRectangle 10" 
+                    StrokeThickness="1"
+                    Stroke="#DDDDDD" 
+                    HeightRequest="200" 
+                    BackgroundColor="#F5F5F5">
+                <Grid>
+                    <Image Source="{Binding ChequeImage}" 
+                           Aspect="AspectFit"
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center"
+                           IsVisible="{Binding HasImage}" />
+                    <Label Text="No image selected"
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center"
+                           TextColor="Gray"
+                           IsVisible="{Binding HasImage, Converter={StaticResource InverseBoolConverter}}" />
+                </Grid>
+            </Border>
+
+            <!-- Image Capture Buttons -->
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                <Button Grid.Column="0" 
+                        Text="📷 Take Photo"
+                        Command="{Binding CaptureImageCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}" />
+                <Button Grid.Column="1" 
+                        Text="🖼️ Select Image"
+                        Command="{Binding SelectImageCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}" />
+            </Grid>
+            <Button Text="🔍 Extract Data from Image"
+                    Command="{Binding ExtractDataCommand}"
+                    IsEnabled="{Binding HasImage}" />
+
+            <!-- Transaction Details Section -->
+            <Label Text="Transaction Details" FontAttributes="Bold" Margin="0,10,0,0" />
+            <Label Text="Customer" />
+            <Picker ItemsSource="{Binding Customers}"
+                    SelectedItem="{Binding SelectedCustomer}"
+                    ItemDisplayBinding="{Binding CustomerName}"
+                    Title="Select Customer" />
+            <Label Text="Vendor" />
+            <Picker ItemsSource="{Binding Vendors}"
+                    SelectedItem="{Binding SelectedVendor}"
+                    ItemDisplayBinding="{Binding VendorName}" 
+                    Title="Select Vendor" />
+            <Label Text="Cheque Number" />
+            <Entry Text="{Binding Transaction.ChequeNumber}" Placeholder="Enter Cheque Number" />
+            <Label Text="Amount" />
+            <Entry Text="{Binding Transaction.ChequeAmount}" Placeholder="Enter Amount" Keyboard="Numeric" />
+            <Label Text="Date" />
+            <DatePicker Date="{Binding Transaction.Date}" />
+
+            <!-- Status and Action Buttons -->
+            <Label Text="{Binding StatusMessage}"
+                   TextColor="{Binding IsSuccess, Converter={StaticResource BoolToColorConverter}}" />
+
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10" Margin="0,10,0,0">
+                <Button Grid.Column="0" 
+                        Text="Save"
+                        Command="{Binding SaveCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}" />
+                <Button Grid.Column="1" 
+                        Text="Clear"
+                        Command="{Binding ClearCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}" />
+            </Grid>
+
+            <!-- Activity Indicator -->
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}" 
+                               HorizontalOptions="Center" 
+                               Margin="0,10,0,0" />
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

@@ -24,6 +24,9 @@
         <Tab Title="Chat" Icon="chat_icon.png">
             <ShellContent ContentTemplate="{DataTemplate views:ChatPage}" />
         </Tab>
+        <Tab Title="Add Transaction" Icon="plus_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate views:TransactionEntryPage}" />
+        </Tab>
         <Tab Title="Settings" Icon="settings_icon.png">
             <ShellContent ContentTemplate="{DataTemplate views:SettingsPage}" />
         </Tab>

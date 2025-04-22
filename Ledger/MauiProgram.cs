@@ -41,6 +41,8 @@ namespace Ledger
 
             // Register ViewModels
             builder.Services.AddSingleton<ChatViewModel>();
+            builder.Services.AddSingleton<SettingsViewModel>();
+            builder.Services.AddSingleton<TransactionEntryViewModel>();
 
             // Register Pages
             builder.Services.AddSingleton<ChatPage>();
@@ -50,12 +52,11 @@ namespace Ledger
             builder.Services.AddSingleton<BoolToColorConverter>();
 
             // Register ViewModels
-            builder.Services.AddSingleton<ChatViewModel>();
-            builder.Services.AddSingleton<SettingsViewModel>();
 
             // Register Pages
             builder.Services.AddSingleton<ChatPage>();
             builder.Services.AddSingleton<SettingsPage>();
+            builder.Services.AddSingleton<TransactionEntryPage>();
 
             // Register Shell
             builder.Services.AddTransient<AppShell>();
